@@ -23,7 +23,11 @@ namespace AlanShirkInformationalSite.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Overview()
+        {
+            return View();
+        }
+        public IActionResult Forum()
         {
             return View();
         }
