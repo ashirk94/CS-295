@@ -13,8 +13,7 @@ namespace AlanShirkInformationalSite
         //loading users from file
         public static string filename = "posts.txt";
         private static bool loaded = false;
-        private static readonly List<ForumPostModel> forumPostModels = new List<ForumPostModel>();
-        private static List<ForumPostModel> posts = forumPostModels;
+        private static List<ForumPostModel> posts = new List<ForumPostModel>();
 
         public static List<ForumPostModel> GetPosts()
         {
@@ -30,20 +29,25 @@ namespace AlanShirkInformationalSite
             {
                 StreamReader reader = new StreamReader(filename);
                 string line = reader.ReadLine();
-                List<string> parts = line.Split(',').ToList();
-                string post = parts[0];
-                string user = parts[1];
-                DateTime date = DateTime.Parse(parts[2]);
-                string page = parts[3];
-                int rating = Int32.Parse(parts[4]);
-                posts.Add(new ForumPostModel
+                while (line != null)
                 {
-                    Text = post,
-                    User = user,
-                    PostDate = date,
-                    Page = page,
-                    Rating = rating
-                });
+                    List<string> parts = line.Split(',').ToList();
+                    string post = parts[0];
+                    string user = parts[1];
+                    DateTime date = DateTime.Parse(parts[2]);
+                    string page = parts[3];
+                    int rating = Int32.Parse(parts[4]);
+                    posts.Add(new ForumPostModel
+                    {
+                        Text = post,
+                        User = user,
+                        PostDate = date,
+                        Page = page,
+                        Rating = rating
+                    });
+                    line = reader.ReadLine();
+                }
+
                 loaded = true;
                 reader.Close();
             }
@@ -62,7 +66,7 @@ namespace AlanShirkInformationalSite
             }
             try
             {
-                using StreamWriter writer = new StreamWriter(filename);
+                StreamWriter writer = new StreamWriter(filename);
                 foreach (ForumPostModel post in posts)
                 {
                     string line = post.Text + ',' + post.User + ','
@@ -78,6 +82,10 @@ namespace AlanShirkInformationalSite
         }
         public static void AddPost(ForumPostModel post)
         {
+            if (loaded == false)
+            {
+                LoadPosts();
+            }
             posts.Add(post);
         }
     }

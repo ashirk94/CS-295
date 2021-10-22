@@ -49,10 +49,7 @@ namespace AlanShirkInformationalSite.Controllers
                 UserDB.AddUser(user);
                 UserDB.SaveUsers();
             }
-
-            List<UserModel> users = UserDB.GetUsers();
-            ViewBag.users = users;
-            return View(user);
+            return View();
         }
         [HttpPost]
         public IActionResult Forum(ForumPostModel post)
@@ -62,10 +59,7 @@ namespace AlanShirkInformationalSite.Controllers
                 ForumPostDB.AddPost(post);
                 ForumPostDB.SavePosts();
             }
-
-            List<ForumPostModel> posts = ForumPostDB.GetPosts();
-            ViewBag.posts = posts;
-            return View(post);
+            return View();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

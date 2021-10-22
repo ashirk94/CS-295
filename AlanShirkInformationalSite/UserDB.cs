@@ -12,8 +12,7 @@ namespace AlanShirkInformationalSite
         //loading users from file
         public static string filename = "users.txt";
         private static bool loaded = false;
-        private static readonly List<UserModel> userModels = new List<UserModel>();
-        private static List<UserModel> users = userModels;
+        private static List<UserModel> users = new List<UserModel>();
 
         public static List<UserModel> GetUsers()
         {
@@ -27,10 +26,15 @@ namespace AlanShirkInformationalSite
         {
             try
             {
-                using StreamReader reader = new StreamReader(filename);
+                StreamReader reader = new StreamReader(filename);
                 string line = reader.ReadLine();
-                string name = line;
-                users.Add(new UserModel{ Name = name });
+                while (line != null)
+                {
+                    string name = line;
+                    users.Add(new UserModel { Name = name });
+                    line = reader.ReadLine();
+                }
+
                 loaded = true;
                 reader.Close();
             }
@@ -38,7 +42,6 @@ namespace AlanShirkInformationalSite
             {
                 Console.WriteLine(e);
             }
-
         }
         //saving to the file
         public static void SaveUsers()
@@ -49,7 +52,7 @@ namespace AlanShirkInformationalSite
             }
             try
             {
-                using StreamWriter writer = new StreamWriter(filename);
+                StreamWriter writer = new StreamWriter(filename);
                 foreach(UserModel user in users)
                 {
                     string line = user.Name;
@@ -61,11 +64,13 @@ namespace AlanShirkInformationalSite
             {
                 Console.WriteLine(e);
             }
-
-
         }
         public static void AddUser(UserModel user)
         {
+            if (loaded == false)
+            {
+                LoadUsers();
+            }
             users.Add(user);
         }
     }

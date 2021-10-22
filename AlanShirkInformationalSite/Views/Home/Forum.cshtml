@@ -5,33 +5,46 @@
 }
 <div class="text-center">
     <h1 class="display-4">Forum</h1>
-    <table>
-        <tr>
-            <th>User</th>
-            <th>Comment</th>
-            <th>Date/Time</th>
-            <th>Rating</th>
-            <th>Page</th>
-        </tr>
-        @foreach (ForumPostModel post in ViewBag.posts)
-        {
-    <tr>
-        <td>@post.User</td>
-        <td>@post.Text</td>
-        <td>@post.PostDate</td>
-        <td>@post.Rating</td>
-        <td>@post.Page</td>
-    </tr>
-        }
-    </table>
+
+    <br />
 
     <form asp-controller="Home" method="post">
+        <p>Comment:</p>
         <textarea asp-for="Text">Add a public comment...</textarea>
-        <br />
+        <br /><br />
+        <p>User:</p>
         <input asp-for="User">
-        <br />
+        <br /><br />
+        <p>Rating:</p>
         <input asp-for="Rating">
-        <br />
+        <br /><br />
         <button type="submit">Comment</button>
     </form>
+</div>
+<br />
+<br />
+<br />
+<br />
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <table class="table table-responsive">
+            <tr>
+                <th>User</th>
+                <th>Comment</th>
+                <th>Date/Time</th>
+                <th>Rating</th>
+                <th>Page</th>
+            </tr>
+            @foreach (ForumPostModel post in ForumPostDB.GetPosts())
+            {
+                <tr>
+                    <td>@post.User</td>
+                    <td>@post.Text</td>
+                    <td>@post.PostDate</td>
+                    <td>@post.Rating</td>
+                    <td>@post.Page</td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>

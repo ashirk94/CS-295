@@ -9,21 +9,25 @@
         This site will feature images, recipes, and information
         surrounding Scandinavian food.
     </p>
-    <p><a href="/Home/Overview">Overview</a></p>
-    <p><a href="/Home/Forum">Forum</a></p>
-    <table>
-        <tr>
-            <th>User</th>
-        </tr>
-        @foreach (UserModel user in ViewBag.users)
-         {
-        <tr>
-            <td>@user.Name</td>
-        </tr>
-         }
-    </table>
+    <p><a href="/Home/Overview">Overview</a>  --  <a href="/Home/Forum">Forum</a></p>
+
+
     <form asp-controller="Home" method="post">
         Name: <input asp-for="Name" />
         <button type="submit">Submit</button>
     </form>
+</div>
+<br /><br /><br /><br />
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <table class="table table-responsive">
+            <tr>
+                <th>Users:</th>
+                @foreach (UserModel user in UserDB.GetUsers())
+                {
+                    <td>@user.Name</td>
+                }
+            </tr>
+        </table>
+    </div>
 </div>
