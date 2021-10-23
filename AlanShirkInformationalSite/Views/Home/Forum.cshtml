@@ -3,29 +3,25 @@
 @{
     ViewData["Title"] = "Forum";
 }
-<div class="text-center">
+<div class="text-center m-auto" id="back-blue">
     <h1 class="display-4">Forum</h1>
 
     <br />
 
     <form asp-controller="Home" method="post">
         <p>Comment:</p>
-        <textarea asp-for="Text">Add a public comment...</textarea>
+        <textarea class="col-6" asp-for="Text">Add a public comment...</textarea>
         <br /><br />
-        <p>User:</p>
-        <input asp-for="User">
+        <span class="m-1">User:</span>
+        <input class="col-4"asp-for="User">
+        <span class="m-1">Rating:</span>
+        <input class="col-2" asp-for="Rating">
         <br /><br />
-        <p>Rating:</p>
-        <input asp-for="Rating">
-        <br /><br />
-        <button type="submit">Comment</button>
+        <button type="submit" class="btn btn-primary mb-3 col-4">Comment</button>
     </form>
 </div>
 <br />
-<br />
-<br />
-<br />
-<div class="row justify-content-center">
+<div class="row justify-content-center col-8 m-auto" id="back-grey">
     <div class="col-auto">
         <table class="table table-responsive">
             <tr>
