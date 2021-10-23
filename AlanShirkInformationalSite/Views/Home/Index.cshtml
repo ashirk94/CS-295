@@ -1,12 +1,33 @@
-﻿@{
+﻿@model UserModel
+@{
     ViewData["Title"] = "Scandinavian Food";
 }
 
 <div class="text-center">
     <h1 class="display-4">Scandinavian Food</h1>
-    <p>This site will feature images, recipes, and information
-    surrounding Scandinavian food.</p>
-    <p><a href="/Home/Overview">Overview</a></p>
-    <p><a href="/Home/Forum">Forum</a></p>
-    
+    <p>
+        This site will feature images, recipes, and information
+        surrounding Scandinavian food.
+    </p>
+    <p><a href="/Home/Overview">Overview</a>  --  <a href="/Home/Forum">Forum</a></p>
+
+
+    <form asp-controller="Home" method="post">
+        Name: <input asp-for="Name" />
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<br /><br /><br /><br />
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <table class="table table-responsive">
+            <tr>
+                <th>Users:</th>
+                @foreach (UserModel user in UserDB.GetUsers())
+                {
+                    <td>@user.Name</td>
+                }
+            </tr>
+        </table>
+    </div>
 </div>
