@@ -2,32 +2,39 @@
 @{
     ViewData["Title"] = "Scandinavian Food";
 }
-
-<div class="text-center">
+<div class="jumbotron-fluid text-center p-4" id="back-blue">
     <h1 class="display-4">Scandinavian Food</h1>
+
     <p>
         This site will feature images, recipes, and information
         surrounding Scandinavian food.
     </p>
-    <p><a href="/Home/Overview">Overview</a>  --  <a href="/Home/Forum">Forum</a></p>
+</div>
+<div class="container text-center" id="back-grey">
+
+    <p class="m-3 p-5">
+        <a href="/Home/Overview" class="btn btn-lg btn-primary m-3 col-4">Overview</a>
+        <a href="/Home/Forum" class="btn btn-lg btn-primary m-3 col-4">Forum</a>
+    </p>
 
 
     <form asp-controller="Home" method="post">
         Name: <input asp-for="Name" />
-        <button type="submit">Submit</button>
+        <button class="btn btn-success" type="submit">Add User</button>
     </form>
-</div>
-<br /><br /><br /><br />
-<div class="row justify-content-center">
-    <div class="col-auto">
-        <table class="table table-responsive">
-            <tr>
-                <th>Users:</th>
-                @foreach (UserModel user in UserDB.GetUsers())
-                {
-                    <td>@user.Name</td>
-                }
-            </tr>
-        </table>
+
+    <br /><br /><br /><br />
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <table class="table table-responsive">
+                <tr>
+                    <th>Users:</th>
+                    @foreach (UserModel user in UserDB.GetUsers())
+                    {
+                        <td>@user.Name</td>
+                    }
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
