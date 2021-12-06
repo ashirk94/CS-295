@@ -31,7 +31,7 @@
                 <th>Rating</th>
                 <th>Page</th>
             </tr>
-            @foreach (ForumPostModel post in ForumPostDB.GetPosts())
+            @foreach (var post in ViewBag.posts)
             {
                 <tr>
                     <td>@post.User</td>

@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AlanShirkInformationalSite.Models;
 
 namespace AlanShirkInformationalSite
 {
@@ -24,6 +26,9 @@ namespace AlanShirkInformationalSite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<ForumPostContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("ForumPostContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
