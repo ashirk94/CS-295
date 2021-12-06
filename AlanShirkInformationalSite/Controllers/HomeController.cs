@@ -16,27 +16,37 @@ namespace AlanShirkInformationalSite.Controllers
     {
 
         private ForumPostContext postContext { get; set; }
-        public HomeController(ForumPostContext ctx)
+        private PostRepository data { get; set; }
+        public HomeController(PostRepository rep) => data = rep;
+        //using repo
+        public ActionResult Index()
         {
-            postContext = ctx;
-        }
-        [HttpGet]
-        public IActionResult Index()
-        {
-            var users = postContext.Users.OrderBy(p => p.Id);
+            var users = from user in data.GetUsers()select user;
+            ViewBag.Users = users;
             return View();
         }
+        //public HomeController(ForumPostContext ctx)
+        //{
+        //    postContext = ctx;
+        //}
+        //[HttpGet]
+        //public IActionResult Index()
+        //{
+        //    var users = postContext.Users.OrderBy(p => p.Id);
+        //    return View();
+        //}
 
         public IActionResult Overview()
         {
             return View();
         }
+        //using repo
         [HttpGet]
         public IActionResult Forum()
         {
             //adding models for users and forum posts
-            var users = postContext.Users.OrderBy(u => u.Id);
-            var posts = postContext.ForumPosts.OrderBy(p => p.Id);
+            var users = from user in data.GetUsers() select user;
+            var posts = from post in data.GetPosts() select post;
 
             ViewBag.users = users;
             ViewBag.posts = posts;
