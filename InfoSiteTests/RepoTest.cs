@@ -2,78 +2,55 @@
 using System.Collections.Generic;
 using System.Text;
 using AlanShirkInformationalSite.Models;
-using Xunit;
+using System.Linq;
 using AlanShirkInformationalSite.Controllers;
 using Moq;
+using Xunit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InfoSiteTests
 {
-    public class FakeUserRepo : IPostRepository
+    public class RepoTests
     {
-        public ForumPostModel GetPostById(int Id) => new ForumPostModel();
         private ForumPostContext context;
 
-        public IEnumerable<UserModel> GetUsers()
-        {
-            return context.Users;
-        }
-        public IEnumerable<ForumPostModel> GetPosts()
-        {
-            return context.ForumPosts;
-        }
+        private Mock<PostRepository> postRepo;
+        private Mock<UserRepository> userRepo;
+        private HomeController controller;
 
-        public void Insert(ForumPostModel post)
+        [Fact]
+        public void TestGetIndex()
         {
-            context.ForumPosts.Add(post);
+            context = new ForumPostContext();
+            postRepo = new Mock<PostRepository>(context);
+            userRepo = new Mock<UserRepository>(context);
+            controller = new HomeController(postRepo.Object, userRepo.Object);
+            var result = controller.Index();
+
+            Assert.IsType<ViewResult>(result);
         }
-
-        public void Delete(int id)
+        [Fact]
+        public void TestPostForum()
         {
-            ForumPostModel post = context.ForumPosts.Find(id);
-            context.ForumPosts.Remove(post);
-        }
+            context = new ForumPostContext();
+            postRepo = new Mock<PostRepository>(context);
+            userRepo = new Mock<UserRepository>(context);
 
-        public void Update(ForumPostModel post)
-        {
-            context.Entry(post).State = EntityState.Modified;
-        }
-
-        public void Save()
-        {
-            context.SaveChanges();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
+            var post = new ForumPostModel
             {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
+                Id = 1,
+                User = "Alan",
+                PostDate = DateTime.Now,
+                Page = "Forum",
+                Rating = 5,
+                Text = "Test"
+            };
+
+            controller = new HomeController(postRepo.Object, userRepo.Object);
+            var result = controller.Forum(post);
+
+            Assert.IsType<ViewResult>(result); 
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        //[Fact]
-        //public void ReturnsView()
-        //{
-        //    var rep = new FakeUserRepo();
-        //    var controller = new HomeController(rep);
-
-        //    var result = controller.Index();
-
-        //    Assert.IsType<ForumPostModel>(result);
-        //}
     }
-
-
 }

@@ -31,6 +31,7 @@ namespace AlanShirkInformationalSite
                 Configuration.GetConnectionString("ForumPostContext")));
 
             services.AddTransient(typeof(PostRepository), typeof(PostRepository));
+            services.AddTransient(typeof(UserRepository), typeof(UserRepository));
             services.AddHttpContextAccessor();
         }
 

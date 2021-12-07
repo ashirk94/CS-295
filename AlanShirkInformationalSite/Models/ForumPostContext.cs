@@ -8,6 +8,8 @@ namespace AlanShirkInformationalSite.Models
 {
     public class ForumPostContext : DbContext
     {
+        public ForumPostContext()
+        { }
         public ForumPostContext(DbContextOptions<ForumPostContext> options) : base(options)
         { }
         public DbSet<ForumPostModel> ForumPosts { get; set; }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlanShirkInformationalSite.Models
 {
-    public class PostRepository : IPostRepository, IDisposable
+    public class PostRepository : IRepository<ForumPostModel>
     {
         private ForumPostContext context;
 
@@ -15,16 +15,12 @@ namespace AlanShirkInformationalSite.Models
             this.context = context;
         }
 
-        public IEnumerable<ForumPostModel> GetPosts()
+        public IEnumerable<ForumPostModel> GetAll()
         {
             return context.ForumPosts;
         }
-        public IEnumerable<UserModel> GetUsers()
-        {
-            return context.Users;
-        }
 
-        public ForumPostModel GetPostById(int id)
+        public ForumPostModel GetById(int id)
         {
             return context.ForumPosts.Find(id);
         }
@@ -48,26 +44,6 @@ namespace AlanShirkInformationalSite.Models
         public void Save()
         {
             context.SaveChanges();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }
