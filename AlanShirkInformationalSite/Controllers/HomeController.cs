@@ -1,5 +1,6 @@
 ﻿using AlanShirkInformationalSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -7,22 +8,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlanShirkInformationalSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private ForumPostContext postContext { get; set; }
+        public HomeController(ForumPostContext ctx)
         {
-            _logger = logger;
+            postContext = ctx;
         }
         [HttpGet]
         public IActionResult Index()
         {
-            List<UserModel> users = new List<UserModel>();
-            ViewBag.users = users;
+            var users = postContext.Users.OrderBy(p => p.Id);
             return View();
         }
 
@@ -34,8 +35,8 @@ namespace AlanShirkInformationalSite.Controllers
         public IActionResult Forum()
         {
             //adding models for users and forum posts
-            List<UserModel> users = new List<UserModel>();
-            List<ForumPostModel> posts = new List<ForumPostModel>();
+            var users = postContext.Users.OrderBy(u => u.Id);
+            var posts = postContext.ForumPosts.OrderBy(p => p.Id);
 
             ViewBag.users = users;
             ViewBag.posts = posts;
@@ -44,22 +45,36 @@ namespace AlanShirkInformationalSite.Controllers
         [HttpPost]
         public IActionResult Index(UserModel user)
         {
-            if(ModelState.IsValid)
+            try
             {
-                UserDB.AddUser(user);
-                UserDB.SaveUsers();
+                if (user.Id == 0)
+                    postContext.Users.Add(user);
+                else
+                    postContext.Users.Update(user);
+                postContext.SaveChanges();
+                return RedirectToAction("Index", "Home");
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
         [HttpPost]
         public IActionResult Forum(ForumPostModel post)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ForumPostDB.AddPost(post);
-                ForumPostDB.SavePosts();
+                if (post.Id == 0)
+                    postContext.ForumPosts.Add(post);
+                else
+                    postContext.ForumPosts.Update(post);
+                postContext.SaveChanges();
+                return RedirectToAction("Forum", "Home");
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -79,6 +94,18 @@ namespace AlanShirkInformationalSite.Controllers
             ViewBag.Score = state.NumCorrect();
 
             return View();
+        }
+        [HttpPost]
+        public IActionResult Create(IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
