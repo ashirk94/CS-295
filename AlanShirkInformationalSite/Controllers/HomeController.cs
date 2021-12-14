@@ -16,14 +16,18 @@ namespace AlanShirkInformationalSite.Controllers
     {
 
         private ForumPostContext postContext { get; set; }
-        public HomeController(ForumPostContext ctx)
+        private PostRepository postData { get; set; }
+        private UserRepository userData { get; set; }
+        public HomeController(PostRepository postRep, UserRepository userRep)
         {
-            postContext = ctx;
+            postData = postRep;
+            userData = userRep;
         }
-        [HttpGet]
+        //using repos
         public IActionResult Index()
         {
-            var users = postContext.Users.OrderBy(p => p.Id);
+            var users = from user in userData.GetAll()select user;
+            ViewBag.Users = users;
             return View();
         }
 
@@ -31,12 +35,13 @@ namespace AlanShirkInformationalSite.Controllers
         {
             return View();
         }
+        //using repo
         [HttpGet]
         public IActionResult Forum()
         {
             //adding models for users and forum posts
-            var users = postContext.Users.OrderBy(u => u.Id);
-            var posts = postContext.ForumPosts.OrderBy(p => p.Id);
+            var users = from user in userData.GetAll() select user;
+            var posts = from post in postData.GetAll() select post;
 
             ViewBag.users = users;
             ViewBag.posts = posts;
@@ -48,10 +53,10 @@ namespace AlanShirkInformationalSite.Controllers
             try
             {
                 if (user.Id == 0)
-                    postContext.Users.Add(user);
+                    userData.Insert(user);
                 else
-                    postContext.Users.Update(user);
-                postContext.SaveChanges();
+                    userData.Update(user);
+                userData.Save();
                 return RedirectToAction("Index", "Home");
             }
             catch
@@ -65,10 +70,10 @@ namespace AlanShirkInformationalSite.Controllers
             try
             {
                 if (post.Id == 0)
-                    postContext.ForumPosts.Add(post);
+                    postData.Insert(post);
                 else
-                    postContext.ForumPosts.Update(post);
-                postContext.SaveChanges();
+                    postData.Update(post);
+                postData.Save();
                 return RedirectToAction("Forum", "Home");
             }
             catch
@@ -94,18 +99,6 @@ namespace AlanShirkInformationalSite.Controllers
             ViewBag.Score = state.NumCorrect();
 
             return View();
-        }
-        [HttpPost]
-        public IActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -144,3 +144,7 @@ C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\n
 C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\Moq.dll
+C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\ashir\OneDrive\Documents\GitHub\AlanShirkSite\InfoSiteTests\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.TestPlatform.TestFramework.dll

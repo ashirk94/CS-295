@@ -29,6 +29,10 @@ namespace AlanShirkInformationalSite
 
             services.AddDbContext<ForumPostContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("ForumPostContext")));
+
+            services.AddTransient(typeof(PostRepository), typeof(PostRepository));
+            services.AddTransient(typeof(UserRepository), typeof(UserRepository));
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
