@@ -66,6 +66,19 @@ namespace AlanShirkInformationalSite.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpGet]
+        public IActionResult Quiz()
+        {
+            ViewBag.Score = 0;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Quiz(QuizState state)
+        {
+            //get score from function in model
+            ViewBag.Score = state.NumCorrect();
 
+            return View();
+        }
     }
 }
