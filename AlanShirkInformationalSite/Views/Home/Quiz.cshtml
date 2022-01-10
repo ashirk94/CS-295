@@ -1,0 +1,30 @@
+﻿@model QuizState
+
+@{
+    ViewData["Title"] = "Quiz";
+}
+<h1>What is the most popular fish to eat in Scandinavia?</h1>
+
+<form asp-action="Quiz" method="post">
+    <input type="radio" asp-for="Answer1" value="A" /> A: Cod <br />
+    <input type="radio" asp-for="Answer1" value="B" /> B: Tilapia <br />
+    <input type="radio" asp-for="Answer1" value="C" /> C: Salmon <br />
+    <input type="radio" asp-for="Answer1" value="D" /> D: Herring <br />
+
+    <br />
+    <h1>Are meatballs served larger in Sweden or Norway?</h1>
+
+
+    <input type="radio" asp-for="Answer2" value="A" /> A: Sweden <br />
+    <input type="radio" asp-for="Answer2" value="B" /> B: Norway <br />
+
+    <br />
+    <h1>Lutfisk is: ___</h1>
+
+
+    <input type="radio" asp-for="Answer3" value="A" /> A: Cod preserved in lye <br />
+    <input type="radio" asp-for="Answer3" value="B" /> B: Fermented shark <br />
+    <input type="radio" asp-for="Answer3" value="C" /> C: Fermented herring <br />
+    <button type="submit" class="btn btn-lg btn-primary m-3 col-4">Submit</button>
+</form>
+<h2>Score: @ViewBag.Score </h2>

@@ -1,5 +1,6 @@
 ﻿using AlanShirkInformationalSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -7,22 +8,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlanShirkInformationalSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private ForumPostContext postContext { get; set; }
+        private PostRepository postData { get; set; }
+        private UserRepository userData { get; set; }
+        public HomeController(PostRepository postRep, UserRepository userRep)
         {
-            _logger = logger;
+            postData = postRep;
+            userData = userRep;
         }
-        [HttpGet]
+        //using repos
         public IActionResult Index()
         {
-            List<UserModel> users = new List<UserModel>();
-            ViewBag.users = users;
+            var users = from user in userData.GetAll()select user;
+            ViewBag.Users = users;
             return View();
         }
 
@@ -30,12 +35,13 @@ namespace AlanShirkInformationalSite.Controllers
         {
             return View();
         }
+        //using repo
         [HttpGet]
         public IActionResult Forum()
         {
             //adding models for users and forum posts
-            List<UserModel> users = new List<UserModel>();
-            List<ForumPostModel> posts = new List<ForumPostModel>();
+            var users = from user in userData.GetAll() select user;
+            var posts = from post in postData.GetAll() select post;
 
             ViewBag.users = users;
             ViewBag.posts = posts;
@@ -44,28 +50,55 @@ namespace AlanShirkInformationalSite.Controllers
         [HttpPost]
         public IActionResult Index(UserModel user)
         {
-            if(ModelState.IsValid)
+            try
             {
-                UserDB.AddUser(user);
-                UserDB.SaveUsers();
+                if (user.Id == 0)
+                    userData.Insert(user);
+                else
+                    userData.Update(user);
+                userData.Save();
+                return RedirectToAction("Index", "Home");
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
         [HttpPost]
         public IActionResult Forum(ForumPostModel post)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ForumPostDB.AddPost(post);
-                ForumPostDB.SavePosts();
+                if (post.Id == 0)
+                    postData.Insert(post);
+                else
+                    postData.Update(post);
+                postData.Save();
+                return RedirectToAction("Forum", "Home");
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpGet]
+        public IActionResult Quiz()
+        {
+            ViewBag.Score = 0;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Quiz(QuizState state)
+        {
+            //get score from function in model
+            ViewBag.Score = state.NumCorrect();
 
+            return View();
+        }
     }
 }

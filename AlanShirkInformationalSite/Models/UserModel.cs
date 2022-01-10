@@ -10,6 +10,7 @@ namespace AlanShirkInformationalSite.Models
     {
         [Required]
         public string Name { get; set; }
-
+        [Required]
+        public int Id { get; set; }
     }
 }
